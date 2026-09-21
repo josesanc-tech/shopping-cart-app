@@ -1,0 +1,97 @@
+<div style="max-width:700px; margin:0 auto">
+
+  <div class="page-header">
+    <h1>Confirmar compra</h1>
+    <p>Revisa tu orden antes de confirmar</p>
+  </div>
+
+  @if (cartStore.items().length === 0) {
+    <div class="empty-state">
+      <mat-icon>warning_amber</mat-icon>
+      <h3>Tu carrito está vacío</h3>
+      <p>No hay productos para confirmar.</p>
+      <button mat-raised-button color="primary" routerLink="/products">
+        Ver productos
+      </button>
+    </div>
+  } @else {
+
+    <!-- Lista de artículos -->
+    <mat-card appearance="outlined" style="margin-bottom:20px">
+      <mat-card-header>
+        <mat-card-title>Artículos en tu orden</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          @for (item of cartStore.items(); track item.productId) {
+            <mat-list-item>
+              <span matListItemTitle>{{ item.productName }}</span>
+              <span matListItemLine style="color:#616161">
+                {{ item.quantity }} × {{ item.unitPrice | currency:'USD':'symbol':'1.2-2' }}
+              </span>
+              <span matListItemMeta style="font-weight:600; color:#3f51b5">
+                {{ item.subtotal | currency:'USD':'symbol':'1.2-2' }}
+              </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+          }
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Resumen de pago -->
+    <mat-card appearance="outlined" style="margin-bottom:24px">
+      <mat-card-header>
+        <mat-card-title>Resumen de pago</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px; color:#616161">
+          <span>Subtotal</span>
+          <span>{{ cartStore.subtotal() | currency:'USD':'symbol':'1.2-2' }}</span>
+        </div>
+
+        @if (cartStore.discount() > 0) {
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px; color:#2e7d32">
+            <span>Descuento aplicado (10%)</span>
+            <span style="font-weight:600">-{{ cartStore.discount() | currency:'USD':'symbol':'1.2-2' }}</span>
+          </div>
+          <div class="discount-banner">
+            <mat-icon style="font-size:18px; width:18px; height:18px">local_offer</mat-icon>
+            ¡Aplicamos un 10% de descuento!
+          </div>
+        }
+
+        <mat-divider style="margin:12px 0"></mat-divider>
+
+        <div style="display:flex; justify-content:space-between; font-size:20px; font-weight:700">
+          <span>Total a pagar</span>
+          <span style="color:#3f51b5">{{ cartStore.total() | currency:'USD':'symbol':'1.2-2' }}</span>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Acciones -->
+    <div style="display:flex; gap:12px; flex-wrap:wrap">
+      <a mat-stroked-button routerLink="/cart" style="flex:1; min-width:140px">
+        <mat-icon>arrow_back</mat-icon>
+        Volver al carrito
+      </a>
+
+      @if (loading()) {
+        <button mat-raised-button color="primary" disabled style="flex:1; min-width:140px; height:44px">
+          <mat-spinner diameter="20"></mat-spinner>
+        </button>
+      } @else {
+        <button mat-raised-button color="primary"
+                (click)="confirm()"
+                style="flex:1; min-width:140px; height:44px">
+          <mat-icon>check_circle</mat-icon>
+          Confirmar compra
+        </button>
+      }
+    </div>
+
+  }
+</div>
