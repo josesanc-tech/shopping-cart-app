@@ -1,0 +1,148 @@
+<div class="page-header">
+  <h1>Mi Carrito</h1>
+  <p>{{ cartStore.itemCount() }} artículo{{ cartStore.itemCount() !== 1 ? 's' : '' }}</p>
+</div>
+
+@if (cartStore.items().length === 0) {
+  <div class="empty-state">
+    <mat-icon>remove_shopping_cart</mat-icon>
+    <h3>Tu carrito está vacío</h3>
+    <p>Agrega productos desde el catálogo para comenzar tu compra.</p>
+    <button mat-raised-button color="primary" routerLink="/products">
+      <mat-icon>store</mat-icon>
+      Ir a productos
+    </button>
+  </div>
+} @else {
+  <div style="display:grid; grid-template-columns:1fr; gap:24px">
+    @if (cartStore.items().length > 0) {
+      <div style="display:grid; grid-template-columns:1fr auto; gap:24px; align-items:start"
+           [style.grid-template-columns]="'1fr'">
+
+        <!-- Tabla de items -->
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Productos en tu carrito</mat-card-title>
+            <div style="flex:1"></div>
+            <button mat-button color="warn" (click)="cartStore.clear()">
+              <mat-icon>delete_sweep</mat-icon>
+              Vaciar carrito
+            </button>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-table [dataSource]="cartStore.items()" class="cart-table">
+
+              <!-- Producto -->
+              <ng-container matColumnDef="product">
+                <mat-header-cell *matHeaderCellDef>Producto</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                  <div>
+                    <div style="font-weight:500">{{ item.productName }}</div>
+                    <div style="font-size:11px; color:#9e9e9e; font-family:monospace">{{ item.productCode }}</div>
+                  </div>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Precio unitario -->
+              <ng-container matColumnDef="price">
+                <mat-header-cell *matHeaderCellDef>Precio unit.</mat-header-cell>
+                <mat-cell *matCellDef="let item">{{ item.unitPrice | currency:'USD':'symbol':'1.2-2' }}</mat-cell>
+              </ng-container>
+
+              <!-- Cantidad -->
+              <ng-container matColumnDef="quantity">
+                <mat-header-cell *matHeaderCellDef>Cantidad</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                  <div class="qty-control">
+                    <button mat-icon-button
+                            (click)="decrement(item)"
+                            [matTooltip]="item.quantity === 1 ? 'Eliminar' : 'Reducir'"
+                            style="width:32px; height:32px; line-height:32px">
+                      <mat-icon style="font-size:18px">
+                        {{ item.quantity === 1 ? 'delete' : 'remove' }}
+                      </mat-icon>
+                    </button>
+                    <span style="min-width:24px; text-align:center; font-weight:600">{{ item.quantity }}</span>
+                    <button mat-icon-button
+                            (click)="increment(item)"
+                            [disabled]="item.quantity >= item.availableStock"
+                            matTooltip="Aumentar cantidad"
+                            style="width:32px; height:32px; line-height:32px">
+                      <mat-icon style="font-size:18px">add</mat-icon>
+                    </button>
+                  </div>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Subtotal -->
+              <ng-container matColumnDef="subtotal">
+                <mat-header-cell *matHeaderCellDef>Subtotal</mat-header-cell>
+                <mat-cell *matCellDef="let item" style="font-weight:600">
+                  {{ item.subtotal | currency:'USD':'symbol':'1.2-2' }}
+                </mat-cell>
+              </ng-container>
+
+              <!-- Acciones -->
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                  <button mat-icon-button color="warn" (click)="remove(item)" matTooltip="Eliminar">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+            </mat-table>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Resumen de orden -->
+        <mat-card appearance="outlined" class="summary-card" style="min-width:280px; max-width:340px; width:100%; margin-top:0; justify-self:end">
+          <mat-card-header>
+            <mat-card-title>Resumen de orden</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px; color:#616161">
+              <span>Subtotal</span>
+              <span>{{ cartStore.subtotal() | currency:'USD':'symbol':'1.2-2' }}</span>
+            </div>
+
+            @if (cartStore.discount() > 0) {
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px; color:#2e7d32">
+                <span>Descuento (10%)</span>
+                <span style="font-weight:600">-{{ cartStore.discount() | currency:'USD':'symbol':'1.2-2' }}</span>
+              </div>
+              <div class="discount-banner">
+                <mat-icon style="font-size:18px; width:18px; height:18px">local_offer</mat-icon>
+                ¡Aplicamos un 10% de descuento!
+              </div>
+            }
+
+            <mat-divider style="margin:12px 0"></mat-divider>
+
+            <div style="display:flex; justify-content:space-between; font-size:18px; font-weight:700">
+              <span>Total</span>
+              <span style="color:#3f51b5">{{ cartStore.total() | currency:'USD':'symbol':'1.2-2' }}</span>
+            </div>
+
+          </mat-card-content>
+          <mat-card-actions style="padding:8px 16px 16px; flex-direction:column; gap:8px">
+            <a mat-raised-button color="primary" routerLink="/checkout" style="width:100%; text-align:center">
+              <mat-icon>payment</mat-icon>
+              Ir a Checkout
+            </a>
+            <a mat-button routerLink="/products" style="width:100%; text-align:center">
+              <mat-icon>arrow_back</mat-icon>
+              Seguir comprando
+            </a>
+          </mat-card-actions>
+        </mat-card>
+
+      </div>
+    }
+  </div>
+}
