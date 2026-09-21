@@ -1,0 +1,95 @@
+<div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px">
+  <div>
+    <h1>Gestión de Productos</h1>
+    <p>Panel de administrador — CRUD completo</p>
+  </div>
+  <button mat-raised-button color="primary" (click)="openCreateDialog()">
+    <mat-icon>add</mat-icon>
+    Nuevo producto
+  </button>
+</div>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" style="margin-bottom:16px"></mat-progress-bar>
+}
+
+<mat-card appearance="outlined">
+  <mat-card-content style="padding:0">
+    <mat-table [dataSource]="products()" style="width:100%">
+
+      <!-- Código -->
+      <ng-container matColumnDef="code">
+        <mat-header-cell *matHeaderCellDef style="font-weight:700">Código</mat-header-cell>
+        <mat-cell *matCellDef="let p">
+          <span style="font-family:monospace; font-size:12px; color:#616161">{{ p.code }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Nombre -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef style="font-weight:700">Nombre</mat-header-cell>
+        <mat-cell *matCellDef="let p" style="font-weight:500">{{ p.name }}</mat-cell>
+      </ng-container>
+
+      <!-- Categoría -->
+      <ng-container matColumnDef="category">
+        <mat-header-cell *matHeaderCellDef style="font-weight:700">Categoría</mat-header-cell>
+        <mat-cell *matCellDef="let p">
+          <mat-chip-set>
+            <mat-chip disabled style="font-size:11px; height:22px">{{ p.category }}</mat-chip>
+          </mat-chip-set>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Precio -->
+      <ng-container matColumnDef="price">
+        <mat-header-cell *matHeaderCellDef style="font-weight:700">Precio</mat-header-cell>
+        <mat-cell *matCellDef="let p" style="font-weight:600; color:#3f51b5">
+          {{ p.price | currency:'USD':'symbol':'1.2-2' }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- Stock -->
+      <ng-container matColumnDef="stock">
+        <mat-header-cell *matHeaderCellDef style="font-weight:700">Stock</mat-header-cell>
+        <mat-cell *matCellDef="let p">
+          <mat-chip-set>
+            <mat-chip [class]="stockClass(p.stock)" disabled style="font-size:11px; height:22px">
+              {{ p.stock === 0 ? 'Agotado' : p.stock }}
+            </mat-chip>
+          </mat-chip-set>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Acciones -->
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let p" style="gap:4px; justify-content:flex-end">
+          <button mat-icon-button color="primary"
+                  matTooltip="Editar producto"
+                  (click)="openEditDialog(p)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn"
+                  matTooltip="Eliminar producto"
+                  (click)="deleteProduct(p)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+
+    @if (!loading() && products().length === 0) {
+      <div class="empty-state" style="padding:48px 24px">
+        <mat-icon>inventory_2</mat-icon>
+        <h3>Sin productos</h3>
+        <p>Crea el primer producto con el botón "Nuevo producto".</p>
+      </div>
+    }
+
+  </mat-card-content>
+</mat-card>

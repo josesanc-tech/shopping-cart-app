@@ -1,0 +1,19 @@
+// Barrel de Angular Material — importar desde aquí en todos los componentes
+export { MatToolbarModule } from '@angular/material/toolbar';
+export { MatButtonModule } from '@angular/material/button';
+export { MatIconModule } from '@angular/material/icon';
+export { MatInputModule } from '@angular/material/input';
+export { MatFormFieldModule } from '@angular/material/form-field';
+export { MatCardModule } from '@angular/material/card';
+export { MatChipsModule } from '@angular/material/chips';
+export { MatBadgeModule } from '@angular/material/badge';
+export { MatTableModule } from '@angular/material/table';
+export { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+export { MatProgressBarModule } from '@angular/material/progress-bar';
+export { MatDividerModule } from '@angular/material/divider';
+export { MatListModule } from '@angular/material/list';
+export { MatSelectModule } from '@angular/material/select';
+export { MatSnackBarModule } from '@angular/material/snack-bar';
+export { MatTooltipModule } from '@angular/material/tooltip';
+export { MatRippleModule } from '@angular/material/core';
+export { MatMenuModule } from '@angular/material/menu';
