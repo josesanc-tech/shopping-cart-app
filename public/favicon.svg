@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Fondo redondeado color indigo -->
+  <rect width="32" height="32" rx="6" fill="#3f51b5"/>
+  <!-- Carrito de compras blanco centrado -->
+  <g transform="translate(4, 4) scale(1.0)">
+    <path fill="white"
+      d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z
+         M17 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z
+         M5.2 4H3V2H1v2h2l3.6 7.6L5.2 14c-.2.3-.2.7-.2 1
+         0 1.1.9 2 2 2h14v-2H7.4c-.1 0-.2-.1-.2-.2l.1-.3.9-1.5
+         H19c.7 0 1.4-.4 1.7-1l3.6-6.5c.4-.7-.1-1.5-.9-1.5H5.2z"/>
+  </g>
+</svg>

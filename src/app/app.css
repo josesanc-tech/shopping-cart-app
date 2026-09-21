@@ -1,0 +1,7 @@
+/* Estilos del componente raíz — los estilos globales están en styles.css */
+
+/* Nav link activo */
+.active-nav {
+  background: rgba(255,255,255,0.18) !important;
+  border-radius: 4px;
+}
