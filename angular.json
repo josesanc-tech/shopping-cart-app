@@ -59,7 +59,8 @@
               "buildTarget": "shopping-cart-app:build:production"
             },
             "development": {
-              "buildTarget": "shopping-cart-app:build:development"
+              "buildTarget": "shopping-cart-app:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
