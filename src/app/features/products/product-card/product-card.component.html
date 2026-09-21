@@ -1,0 +1,72 @@
+<mat-card class="product-card" appearance="outlined">
+
+  <mat-card-header>
+    <mat-card-subtitle>
+      <mat-chip-set>
+        <mat-chip disabled style="font-size:11px; height:22px">{{ product.category }}</mat-chip>
+      </mat-chip-set>
+    </mat-card-subtitle>
+    <mat-card-title style="font-size:15px; margin-top:6px; line-height:1.4">
+      {{ product.name }}
+    </mat-card-title>
+    <mat-card-subtitle style="font-family:monospace; font-size:11px; color:#9e9e9e">
+      {{ product.code }}
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content style="padding-top:8px; flex:1">
+    <p style="font-size:13px; color:#616161; margin:0 0 12px 0; line-height:1.5">
+      {{ product.description }}
+    </p>
+
+    <!-- Stock chip -->
+    @if (stockStatus === 'out') {
+      <mat-chip-set>
+        <mat-chip class="stock-chip-out" disabled>
+          <mat-icon matChipAvatar style="font-size:14px">cancel</mat-icon>
+          Agotado
+        </mat-chip>
+      </mat-chip-set>
+    } @else if (stockStatus === 'low') {
+      <mat-chip-set>
+        <mat-chip class="stock-chip-low" disabled>
+          <mat-icon matChipAvatar style="font-size:14px">warning</mat-icon>
+          Últimas {{ product.stock }} unidades
+        </mat-chip>
+      </mat-chip-set>
+    } @else {
+      <mat-chip-set>
+        <mat-chip class="stock-chip-ok" disabled>
+          <mat-icon matChipAvatar style="font-size:14px">check_circle</mat-icon>
+          {{ product.stock }} en stock
+        </mat-chip>
+      </mat-chip-set>
+    }
+  </mat-card-content>
+
+  <mat-card-actions style="display:flex; justify-content:space-between; align-items:center; padding:8px 16px 12px">
+    <span style="font-size:22px; font-weight:700; color:#3f51b5">
+      {{ product.price | currency:'USD':'symbol':'1.2-2' }}
+    </span>
+
+    <!-- Botón agregar — separado según estado para evitar issue de content projection -->
+    @if (adding()) {
+      <button mat-raised-button color="primary" disabled>
+        <mat-spinner diameter="18"></mat-spinner>
+      </button>
+    } @else if (product.stock === 0) {
+      <button mat-raised-button disabled matTooltip="Sin stock disponible">
+        <mat-icon>remove_shopping_cart</mat-icon>
+        Agotado
+      </button>
+    } @else {
+      <button mat-raised-button color="primary"
+              (click)="addToCart()"
+              matTooltip="Agregar al carrito">
+        <mat-icon>add_shopping_cart</mat-icon>
+        Agregar
+      </button>
+    }
+  </mat-card-actions>
+
+</mat-card>

@@ -1,0 +1,78 @@
+<div class="page-header">
+  <h1>Productos</h1>
+  <p>
+    @if (loading()) { Cargando... }
+    @else { {{ products().length }} producto{{ products().length !== 1 ? 's' : '' }} disponible{{ products().length !== 1 ? 's' : '' }} }
+  </p>
+</div>
+
+<!-- Barra de filtros -->
+<div style="display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start; margin-bottom:24px">
+
+  <!-- Buscador -->
+  <mat-form-field appearance="outline" style="flex:1; min-width:240px">
+    <mat-label>Buscar productos</mat-label>
+    <input matInput [formControl]="searchControl"
+           placeholder="Nombre, código o categoría..." />
+    <mat-icon matPrefix>search</mat-icon>
+    @if (searchControl.value) {
+      <button matSuffix mat-icon-button aria-label="Limpiar" (click)="searchControl.setValue('')">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+
+  <!-- Chips de categoría -->
+  <div class="category-chips" style="padding-top:8px">
+    <mat-chip-set aria-label="Filtrar por categoría">
+      <mat-chip
+        [highlighted]="selectedCategory() === ''"
+        (click)="selectCategory('')">
+        Todas
+      </mat-chip>
+      @for (cat of categories; track cat) {
+        <mat-chip
+          [highlighted]="selectedCategory() === cat"
+          (click)="selectCategory(cat)">
+          {{ cat }}
+        </mat-chip>
+      }
+    </mat-chip-set>
+  </div>
+
+  <!-- Limpiar filtros -->
+  @if (hasActiveFilters) {
+    <button mat-button color="primary" (click)="clearFilters()" style="padding-top:12px">
+      <mat-icon>filter_list_off</mat-icon>
+      Limpiar filtros
+    </button>
+  }
+
+</div>
+
+<!-- Progress bar -->
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" style="margin-bottom:16px"></mat-progress-bar>
+}
+
+<!-- Grid de productos -->
+@if (!loading()) {
+  @if (products().length > 0) {
+    <div class="products-grid">
+      @for (product of products(); track product.id) {
+        <app-product-card [product]="product" />
+      }
+    </div>
+  } @else {
+    <!-- Empty state -->
+    <div class="empty-state">
+      <mat-icon>search_off</mat-icon>
+      <h3>Sin resultados</h3>
+      <p>No encontramos productos para tu búsqueda. Prueba con otros términos o limpia los filtros.</p>
+      <button mat-raised-button color="primary" (click)="clearFilters()">
+        <mat-icon>refresh</mat-icon>
+        Ver todos los productos
+      </button>
+    </div>
+  }
+}
