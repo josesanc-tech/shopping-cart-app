@@ -1,0 +1,85 @@
+<div class="login-container">
+  <mat-card class="login-card">
+
+    <!-- Logo -->
+    <div class="login-logo">
+      <mat-icon>shopping_cart</mat-icon>
+      <h1>ShoppingCart</h1>
+      <p>Inicia sesión para continuar</p>
+    </div>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+        <!-- Usuario -->
+        <mat-form-field appearance="outline" style="width:100%; margin-bottom:8px">
+          <mat-label>Usuario</mat-label>
+          <input matInput formControlName="username"
+                 autocomplete="username" placeholder="ej. cliente" />
+          <mat-icon matPrefix>person</mat-icon>
+          @if (username.invalid && username.touched) {
+            <mat-error>
+              @if (username.errors?.['required']) { El usuario es requerido }
+              @else { Mínimo 3 caracteres }
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Contraseña -->
+        <mat-form-field appearance="outline" style="width:100%; margin-bottom:16px">
+          <mat-label>Contraseña</mat-label>
+          <input matInput [type]="hidePassword() ? 'password' : 'text'"
+                 formControlName="password"
+                 autocomplete="current-password"
+                 class="no-reveal" />
+          <mat-icon matPrefix>lock</mat-icon>
+          <button mat-icon-button matSuffix type="button"
+                  (click)="togglePassword()"
+                  [attr.aria-label]="hidePassword() ? 'Mostrar contraseña' : 'Ocultar contraseña'">
+            <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (password.invalid && password.touched) {
+            <mat-error>
+              @if (password.errors?.['required']) { La contraseña es requerida }
+              @else { Mínimo 6 caracteres }
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Botón -->
+        <button mat-raised-button color="primary" type="submit"
+                [disabled]="form.invalid || loading()"
+                style="width:100%; height:48px; font-size:15px; letter-spacing:0.5px">
+          @if (loading()) {
+            <mat-spinner diameter="22" style="display:inline-block; margin-right:8px"></mat-spinner>
+            Iniciando sesión...
+          } @else {
+            Iniciar sesión
+          }
+        </button>
+
+      </form>
+
+      <!-- Credenciales de prueba -->
+      <div class="credentials-hint">
+        <p>Credenciales de prueba</p>
+        <div class="credentials-grid">
+          <div class="credential-item">
+            <span class="role">Cliente</span>
+            <span class="creds">cliente / Cliente123!</span>
+          </div>
+          <div class="credential-item">
+            <span class="role">Admin</span>
+            <span class="creds">admin / Admin123!</span>
+          </div>
+        </div>
+      </div>
+
+    </mat-card-content>
+
+    <mat-card-footer style="text-align:center; padding:12px; color:#9e9e9e; font-size:12px">
+      Shopping Cart &copy; {{ currentYear }}
+    </mat-card-footer>
+
+  </mat-card>
+</div>
