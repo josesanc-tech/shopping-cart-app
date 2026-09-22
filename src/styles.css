@@ -111,6 +111,37 @@ mat-card {
   gap: 8px;
 }
 
+/* Centrar la celda de cantidad en la tabla del carrito */
+.cart-table .mat-column-quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-table mat-header-cell.mat-column-quantity {
+  justify-content: center;
+}
+
+/* Centrar ícono dentro de mat-raised-button en empty state */
+.empty-state .mat-mdc-raised-button .mdc-button__label,
+.empty-state .mat-mdc-button .mdc-button__label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.empty-state .mat-mdc-raised-button mat-icon,
+.empty-state .mat-mdc-button mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  vertical-align: middle;
+  position: relative;
+  top: 0;
+}
+
 /* Summary card */
 .summary-card {
   position: sticky;
@@ -133,8 +164,18 @@ mat-card {
 
 /* Order chip */
 .order-chip-completed {
-  background-color: #e8f5e9 !important;
-  color: #2e7d32 !important;
+  background-color: #2e7d32 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.order-chip-completed .mdc-evolution-chip__text-label {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.order-chip-completed mat-icon {
+  color: #ffffff !important;
 }
 
 /* Empty state */
