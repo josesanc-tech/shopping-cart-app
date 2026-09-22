@@ -18,8 +18,10 @@ Frontend Angular 22 del carrito de compras. Consume la API REST del repositorio 
 
 ```bash
 # 1. Clonar el repositorio
-git clone <url-del-repo>
+git clone https://github.com/josesanc-tech/shopping-cart-app.git
 cd shopping-cart-app
+
+git checkout develop
 
 # 2. Instalar dependencias
 npm install
